@@ -1,0 +1,80 @@
+/* ── Auth Layout — shared cinematic background ─────────────── */
+.auth-layout {
+  position: relative;
+  width: 100vw;
+  min-height: 100vh;
+  overflow: hidden;
+  background: var(--color-bg-base);
+}
+
+/* ── Background (GPU-accelerated pan via transform) ────────── */
+.auth-bg {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 180vw;
+  height: 180vh;
+  z-index: 0;
+
+  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat;
+  will-change: transform;
+  transform: translate(0, 0);
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@media (prefers-color-scheme: light) {
+  .auth-bg {
+    background-image: url('../assets/landingpage-light-bg.jpg');
+  }
+}
+
+/* Lower-right quadrant — applied on /login and /register */
+.auth-bg--panned {
+  transform: translate(-44vw, -44vh);
+}
+
+/* ── Dark overlay for readability ──────────────────────────── */
+/* .auth-bg__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: light-dark(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.35));
+  pointer-events: none;
+} */
+
+/* ── Content layer ─────────────────────────────────────────── */
+.auth-content {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+.auth-content--fade-in {
+  animation: fadeIn 0.25s ease-out;
+}
+
+.auth-content--fade-out {
+  animation: fadeOut 0.2s ease-in forwards;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeOut {
+  from { opacity: 1; transform: translateY(0); }
+  to   { opacity: 0; transform: translateY(-6px); }
+}
+
+/* ── Reduced motion ────────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .auth-bg {
+    transition: none;
+  }
+  .auth-content--fade-in,
+  .auth-content--fade-out {
+    animation: none;
+    opacity: 1;
+  }
+}

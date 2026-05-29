@@ -1,0 +1,612 @@
+/* ── Portal Layout ──────────────────────────────────────────── */
+.portal-body {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* ── Sidebar ───────────────────────────────────────────────── */
+.portal-sidebar {
+  display: flex;
+  flex-direction: column;
+  width: 260px;
+  min-width: 260px;
+  height: 100vh;
+  background-color: var(--color-bg-surface);
+  border-right: 1px solid var(--color-border-default);
+  padding: 24px 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.portal-sidebar .sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 24px;
+  border-bottom: 1px solid var(--color-border-default);
+  margin-bottom: 24px;
+}
+
+.portal-sidebar .sidebar-logo {
+  font-size: 1.75rem;
+  line-height: 1;
+}
+
+.portal-sidebar .sidebar-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.portal-sidebar .sidebar-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1;
+}
+
+.portal-sidebar .sidebar-link {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  color: var(--color-text-secondary);
+  font-size: 0.925rem;
+  font-weight: 500;
+  text-decoration: none;
+  border: none;
+  background: none;
+  text-align: left;
+  cursor: pointer;
+  width: 100%;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease;
+}
+
+.portal-sidebar .sidebar-link:hover {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.portal-sidebar .sidebar-link.active {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent-primary);
+  font-weight: 600;
+}
+
+.portal-sidebar .sidebar-icon {
+  font-size: 1.15rem;
+  line-height: 1;
+}
+
+.portal-sidebar .sidebar-footer {
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border-default);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.portal-user-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.portal-user-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  background: linear-gradient(135deg, var(--color-accent-primary), var(--color-teal));
+  color: white;
+  font-size: 0.8rem;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+
+.portal-username {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+}
+
+.portal-sidebar .logout-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  padding: 10px 14px;
+  background: none;
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  font-size: 0.9rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.portal-sidebar .logout-btn:hover {
+  background-color: var(--color-coral);
+  color: white;
+  border-color: var(--color-coral);
+}
+
+/* ── Main Content ──────────────────────────────────────────── */
+.portal-main {
+  flex: 1;
+  padding: 32px 40px;
+  overflow-y: auto;
+  background-color: var(--color-bg-base);
+}
+
+.portal-header {
+  margin-bottom: 28px;
+}
+
+.portal-header h1 {
+  font-size: 1.75rem;
+  font-weight: 700;
+}
+
+.portal-subtitle {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+/* ── Placeholder Content ───────────────────────────────────── */
+.portal-content-placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  text-align: center;
+}
+
+.portal-content-placeholder .placeholder-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.6;
+}
+
+.portal-content-placeholder h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.portal-content-placeholder p {
+  color: var(--color-text-tertiary);
+  font-size: 0.92rem;
+}
+
+/* ── Server List ───────────────────────────────────────────── */
+.server-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.server-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-xs);
+  transition: box-shadow 0.2s ease, transform 0.12s ease;
+}
+
+.server-card:hover {
+  box-shadow: var(--shadow-sm);
+  transform: translateY(-1px);
+}
+
+.server-card-left {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.server-status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.server-status-dot.status-online {
+  background-color: var(--color-teal);
+  box-shadow: 0 0 6px rgba(29, 158, 117, 0.5);
+}
+
+.server-status-dot.status-offline {
+  background-color: var(--color-text-tertiary);
+}
+
+.server-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.server-name {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  margin: 0;
+}
+
+.server-game {
+  font-size: 0.78rem;
+  color: var(--color-text-tertiary);
+  font-weight: 500;
+}
+
+.server-card-right {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.server-meta {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.server-players {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: var(--color-text-secondary);
+}
+
+.server-status-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 3px 10px;
+  border-radius: var(--radius-full);
+}
+
+.server-status-label.label-online {
+  background-color: rgba(29, 158, 117, 0.12);
+  color: var(--color-teal);
+}
+
+.server-status-label.label-offline {
+  background-color: rgba(120, 120, 130, 0.1);
+  color: var(--color-text-tertiary);
+}
+
+.server-join-btn {
+  padding: 6px 18px;
+  border-radius: var(--radius-sm);
+  font-size: 0.82rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-accent-primary);
+  color: white;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.server-join-btn:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+  box-shadow: var(--shadow-accent);
+  transform: translateY(-1px);
+}
+
+.server-join-btn:disabled {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-tertiary);
+  cursor: not-allowed;
+}
+
+/* ── Unverified Label ──────────────────────────────────────── */
+.portal-unverified-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.65rem;
+  font-weight: 700;
+  background-color: rgba(186, 117, 23, 0.14);
+  color: var(--color-amber);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/* ── Locked Section (Pending Users) ────────────────────────── */
+.portal-locked-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  background-color: var(--color-bg-surface);
+  border: 1px solid rgba(186, 117, 23, 0.2);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  text-align: center;
+}
+
+.portal-locked-section .locked-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+  opacity: 0.7;
+}
+
+.portal-locked-section h3 {
+  font-size: 1.15rem;
+  font-weight: 600;
+  color: var(--color-amber);
+  margin-bottom: 8px;
+}
+
+.portal-locked-section p {
+  color: var(--color-text-tertiary);
+  font-size: 0.92rem;
+  max-width: 400px;
+}
+
+/* ── Responsive: Tablet — icon-only sidebar ────────────────── */
+@media (max-width: 768px) {
+  .portal-sidebar {
+    width: 64px;
+    min-width: 64px;
+    padding: 16px 8px;
+    align-items: center;
+  }
+
+  .portal-sidebar .sidebar-title,
+  .portal-sidebar .sidebar-link span:not(.sidebar-icon),
+  .portal-sidebar .logout-btn span:not(.sidebar-icon),
+  .portal-username,
+  .portal-unverified-label {
+    display: none;
+  }
+
+  .portal-sidebar .sidebar-header {
+    justify-content: center;
+    padding-bottom: 16px;
+    margin-bottom: 16px;
+  }
+
+  .portal-sidebar .sidebar-link {
+    justify-content: center;
+    padding: 10px;
+    gap: 0;
+  }
+
+  .portal-sidebar .sidebar-icon {
+    margin: 0;
+  }
+
+  .portal-sidebar .logout-btn {
+    padding: 10px;
+    font-size: 0;
+    gap: 0;
+  }
+
+  .portal-sidebar .logout-btn svg {
+    margin: 0 auto;
+  }
+
+  .portal-user-avatar {
+    margin: 0 auto;
+  }
+
+  .portal-user-info {
+    justify-content: center;
+  }
+
+  .portal-main {
+    padding: 24px 20px;
+  }
+
+  .portal-header h1 {
+    font-size: 1.4rem;
+  }
+
+  .portal-subtitle {
+    font-size: 0.85rem;
+  }
+
+  .portal-content-placeholder,
+  .portal-locked-section {
+    padding: 48px 24px;
+  }
+}
+
+
+/* ── Mobile Logout Button (hidden on desktop/tablet) ───────── */
+.portal-sidebar .mobile-logout-btn {
+  display: none;
+}
+
+/* ── Responsive: Mobile — bottom navigation ────────────────── */
+@media (max-width: 480px) {
+  .portal-body {
+    flex-direction: column-reverse;
+  }
+
+  .portal-sidebar {
+    width: 100%;
+    min-width: 100%;
+    height: auto;
+    flex-direction: row;
+    padding: 8px 12px;
+    border-right: none;
+    border-top: 1px solid var(--color-border-default);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.06);
+  }
+
+  .portal-sidebar .sidebar-header,
+  .portal-sidebar .sidebar-footer {
+    display: none;
+  }
+
+  .portal-sidebar .sidebar-nav {
+    flex-direction: row;
+    justify-content: space-around;
+    width: 100%;
+    gap: 0;
+  }
+
+  .portal-sidebar .sidebar-link {
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 12px;
+    font-size: 0.7rem;
+    gap: 4px;
+    border-radius: var(--radius-sm);
+  }
+
+  .portal-sidebar .sidebar-link span:not(.sidebar-icon) {
+    display: block;
+  }
+
+  .portal-sidebar .sidebar-icon {
+    font-size: 1.2rem;
+  }
+
+  .portal-main {
+    flex: 1;
+    padding: 20px 16px;
+    height: calc(100vh - 64px);
+  }
+
+  .portal-header h1 {
+    font-size: 1.25rem;
+  }
+
+  .portal-content-placeholder,
+  .portal-locked-section {
+    padding: 40px 20px;
+  }
+
+  .portal-sidebar .mobile-logout-btn {
+    display: flex;
+    color: var(--color-coral) !important;
+  }
+}
+
+/* ── Logout Confirmation Dialog ────────────────────────────── */
+.logout-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: overlayFadeIn 0.15s ease;
+}
+
+@keyframes overlayFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.logout-dialog {
+  background: var(--color-bg-surface);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  padding: 28px;
+  width: 90%;
+  max-width: 380px;
+  animation: dialogSlideIn 0.2s ease;
+}
+
+@keyframes dialogSlideIn {
+  from { opacity: 0; transform: scale(0.95) translateY(8px); }
+  to   { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+.logout-dialog h3 {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.logout-dialog p {
+  font-size: 0.92rem;
+  color: var(--color-text-secondary);
+  margin-bottom: 24px;
+}
+
+.logout-dialog-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+}
+
+.logout-dialog-cancel {
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-default);
+  background: none;
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    color 0.15s ease,
+    border-color 0.15s ease;
+}
+
+.logout-dialog-cancel:hover {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+.logout-dialog-confirm {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 18px;
+  border-radius: var(--radius-sm);
+  border: none;
+  background-color: var(--color-coral);
+  color: white;
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.15s ease,
+    box-shadow 0.15s ease,
+    transform 0.1s ease;
+}
+
+.logout-dialog-confirm:hover {
+  background-color: #c04a28;
+  box-shadow: 0 2px 12px rgba(216, 90, 48, 0.35);
+  transform: translateY(-1px);
+}

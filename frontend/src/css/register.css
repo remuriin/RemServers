@@ -1,0 +1,378 @@
+.register-body {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 100vh;
+}
+
+.register-window {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 500px;
+  background: light-dark(rgba(249, 249, 249, 0.1), rgba(10, 10, 10, 0.3));
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+
+  border-top-color: light-dark(rgba(255, 255, 255, 1), rgba(170, 170, 170, 0.3));
+  border-left-color: light-dark(rgba(255, 255, 255, 1), rgba(170, 170, 170, 0.2));
+  border-right-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
+  border-bottom-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
+  border-radius: 10px;
+  padding-top: 20px;
+  padding-bottom: 20px;
+  /* border-color: light-dark(rgba(10, 10, 10, 0.4), rgba(170, 170, 170, 0.4)); */
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
+  color: var(--color-text-primary);
+}
+
+.register-window h1 {
+  /* margin-bottom: 20px; */
+}
+
+.register-window form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
+  width: 100%;
+}
+
+.register-window form>* {
+  width: 80%;
+}
+
+/* ── Input Group with Icon ─────────────────────────────────── */
+.register-window .input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.register-window .input-group label {
+  color: var(--color-text-secondary);
+  font-size: 0.88rem;
+
+  /* position: absolute; */
+  font-size: 0.88rem;
+
+  /* top: -8.5px; */
+  background: transparent;
+  padding-left: 5px;
+  padding-right: 5px;
+  /* left: 10px; */
+}
+
+.register-window .input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.register-window .input-icon {
+  position: absolute;
+  left: 16px;
+  color: var(--color-text-tertiary);
+  pointer-events: none;
+  flex-shrink: 0;
+  margin-right: 100px;
+}
+
+.register-window .input-wrapper input {
+  width: 100%;
+  padding: 10px 10px 10px 46px;
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+
+  border-bottom-color: light-dark(rgba(255, 255, 255, 1), rgba(170, 170, 170, 0.25));
+  border-right-color: light-dark(rgba(255, 255, 255, 1), rgba(170, 170, 170, 0.2));
+  border-left-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
+  border-top-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
+  border-radius: var(--radius-sm);
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+
+  /* padding-left: 10px; */
+}
+.register-window .input-wrapper input::placeholder {
+  /* padding-left: 10px; */
+  color: light-dark(rgba(10, 10, 10, 0.4), rgba(255, 255, 255, 0.15));
+}
+
+/* ── Password Toggle ──────────────────────────────────────── */
+.register-window .password-toggle {
+  position: absolute;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: none;
+  border: none;
+  padding: 4px;
+  cursor: pointer;
+  color: var(--color-text-tertiary);
+  transition: color 0.15s ease;
+}
+
+.register-window .password-toggle:hover {
+  color: var(--color-text-primary);
+}
+.register-btn {
+  /* margin-top: 20px; */
+  padding: 10px 20px;
+  background-color: var(--color-accent-primary);
+  color: white;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 600;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.register-btn:hover {
+  background-color: var(--color-accent-hover);
+  box-shadow: var(--shadow-accent);
+}
+
+.register-error {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-coral);
+  font-size: 0.9rem;
+  margin: 0;
+  width: 80%;
+}
+
+.register-success {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-teal);
+  font-size: 0.9rem;
+  margin: 0;
+  width: 80%;
+}
+
+.register-link {
+  margin-top: 15px;
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+}
+
+.register-link a {
+  color: var(--color-text-accent);
+  text-decoration: none;
+}
+
+.register-link a:hover {
+  text-decoration: underline;
+}
+
+/* ── Responsive ────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .register-window {
+    width: 95%;
+    max-width: 500px;
+  }
+}
+
+@media (max-width: 480px) {
+  .register-body {
+    padding: 16px;
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .register-window {
+    width: 100%;
+    border-radius: var(--radius-md);
+    padding: 16px 0;
+  }
+
+  .register-window h1 {
+    font-size: 1.4rem;
+  }
+
+  .register-window form>* {
+    width: 90%;
+  }
+
+  .register-error,
+  .register-success {
+    width: 90%;
+    font-size: 0.82rem;
+  }
+
+  .register-btn {
+    width: 100%;
+  }
+
+  .register-window .google-btn {
+    width: 90%;
+  }
+
+  .register-window .auth-divider {
+    width: 90%;
+  }
+}
+
+/* ── Auth Divider (register context) ───────────────────────── */
+.register-window .auth-divider {
+  display: flex;
+  align-items: center;
+  width: 80%;
+  margin: 20px 0 4px;
+  gap: 12px;
+}
+
+.register-window .auth-divider::before,
+.register-window .auth-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background-color: var(--color-border-default);
+}
+
+.register-window .auth-divider span {
+  font-size: 0.82rem;
+  color: var(--color-text-tertiary);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+}
+
+/* ── Google OAuth Button (register context) ────────────────── */
+.register-window .google-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 80%;
+  margin-top: 12px;
+  padding: 10px 20px;
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.92rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.register-window .google-btn:hover {
+  background: var(--color-bg-subtle);
+  border-color: var(--color-border-strong);
+}
+
+.register-window .google-icon {
+  flex-shrink: 0;
+}
+
+/* ── Verification Waiting Screen ──────────────────────────────── */
+.verification-waiting {
+  padding: 40px 20px !important;
+  text-align: center;
+}
+
+.verification-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(122, 114, 224, 0.12);
+  color: var(--color-accent-primary);
+  margin: 0 auto 20px;
+  animation: pulse-ring 2s ease-in-out infinite;
+}
+
+@keyframes pulse-ring {
+
+  0%,
+  100% {
+    box-shadow: 0 0 0 0 rgba(122, 114, 224, 0.25);
+  }
+
+  50% {
+    box-shadow: 0 0 0 12px rgba(122, 114, 224, 0);
+  }
+}
+
+.verification-waiting h1 {
+  margin-bottom: 8px;
+}
+
+.verification-subtitle {
+  color: var(--color-text-secondary);
+  font-size: 0.95rem;
+  line-height: 1.6;
+  margin: 0 0 16px;
+}
+
+.verification-subtitle strong {
+  color: var(--color-accent-primary);
+  font-weight: 600;
+}
+
+.verification-instructions {
+  color: var(--color-text-tertiary);
+  font-size: 0.85rem;
+  line-height: 1.6;
+  margin: 0 0 24px;
+  max-width: 360px;
+}
+
+.resend-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 10px 24px;
+  background: var(--color-bg-overlay);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-weight: 500;
+  font-size: 0.9rem;
+  transition: background-color 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+  margin-bottom: 16px;
+}
+
+.resend-btn:hover:not(:disabled) {
+  background: var(--color-bg-subtle);
+  border-color: var(--color-border-strong);
+}
+
+.resend-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Spin animation for the refresh icon */
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.spin {
+  animation: spin 1s linear infinite;
+}
