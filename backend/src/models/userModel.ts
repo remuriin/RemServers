@@ -4,7 +4,7 @@ import { getPoolSafe } from '../db/connection';
 export const getPublicUsers = async () => {
   const pool = await getPoolSafe();
 
-  const result = await pool.query('SELECT username FROM mc."Users"');
+  const result = await pool.query('SELECT username FROM "Users"');
 
   return result.rows;
 };

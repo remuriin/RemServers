@@ -4,7 +4,7 @@ import { getPoolSafe } from '../db/connection';
 export const getPendingRequests = async () => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    "SELECT request_id, username, email, status, requested_at, email_verified, google_id FROM mc.\"RegistrationRequests\" WHERE status = 'pending' ORDER BY requested_at DESC"
+    "SELECT request_id, username, email, status, requested_at, email_verified, google_id FROM \"RegistrationRequests\" WHERE status = 'pending' ORDER BY requested_at DESC"
   );
 
   return result.rows;
@@ -14,7 +14,7 @@ export const getPendingRequests = async () => {
 export const getRequestById = async (id: number) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."RegistrationRequests" WHERE request_id = $1',
+    'SELECT * FROM "RegistrationRequests" WHERE request_id = $1',
     [id]
   );
 
@@ -36,19 +36,19 @@ export const approveRequest = async (id: number) => {
 
   // Update RegistrationRequests status to 'approved'
   await pool.query(
-    "UPDATE mc.\"RegistrationRequests\" SET status = 'approved', reviewed_at = NOW() WHERE request_id = $1",
+    "UPDATE \"RegistrationRequests\" SET status = 'approved', reviewed_at = NOW() WHERE request_id = $1",
     [id]
   );
 
   // Insert into mc.Users (include google_id if present)
   if (request.google_id) {
     await pool.query(
-      'INSERT INTO mc."Users" (username, email, password_hash, role, status, google_id) VALUES ($1, $2, $3, $4, $5, $6)',
+      'INSERT INTO "Users" (username, email, password_hash, role, status, google_id) VALUES ($1, $2, $3, $4, $5, $6)',
       [request.username, request.email, request.password_hash || '', 'user', 'active', request.google_id]
     );
   } else {
     await pool.query(
-      'INSERT INTO mc."Users" (username, email, password_hash, role, status) VALUES ($1, $2, $3, $4, $5)',
+      'INSERT INTO "Users" (username, email, password_hash, role, status) VALUES ($1, $2, $3, $4, $5)',
       [request.username, request.email, request.password_hash, 'user', 'active']
     );
   }
@@ -70,7 +70,7 @@ export const denyRequest = async (id: number) => {
   }
 
   await pool.query(
-    "UPDATE mc.\"RegistrationRequests\" SET status = 'denied', reviewed_at = NOW() WHERE request_id = $1",
+    "UPDATE \"RegistrationRequests\" SET status = 'denied', reviewed_at = NOW() WHERE request_id = $1",
     [id]
   );
 

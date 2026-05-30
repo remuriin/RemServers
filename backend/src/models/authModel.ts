@@ -4,7 +4,7 @@ import { getPoolSafe } from '../db/connection';
 export const findUserByUsername = async (usernameOrEmail: string) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."Users" WHERE username = $1 OR email = $1',
+    'SELECT * FROM "Users" WHERE username = $1 OR email = $1',
     [usernameOrEmail]
   );
 
@@ -15,7 +15,7 @@ export const findUserByUsername = async (usernameOrEmail: string) => {
 export const findRegistrationByUsername = async (usernameOrEmail: string) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."RegistrationRequests" WHERE username = $1 OR email = $1',
+    'SELECT * FROM "RegistrationRequests" WHERE username = $1 OR email = $1',
     [usernameOrEmail]
   );
 
@@ -32,7 +32,7 @@ export const createRegistrationRequest = async (
 ) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    `INSERT INTO mc."RegistrationRequests" 
+    `INSERT INTO "RegistrationRequests" 
       (username, email, password_hash, status, email_verified, verification_token, verification_token_expires) 
       VALUES ($1, $2, $3, $4, $5, $6, $7)`,
     [username, email, password_hash, 'pending', false, verification_token, verification_token_expires]
@@ -52,14 +52,14 @@ export const createApprovedUser = async (
 
   if (google_id) {
     const result = await pool.query(
-      'INSERT INTO mc."Users" (username, email, password_hash, role, status, google_id) VALUES ($1, $2, $3, $4, $5, $6)',
+      'INSERT INTO "Users" (username, email, password_hash, role, status, google_id) VALUES ($1, $2, $3, $4, $5, $6)',
       [username, email, password_hash, 'user', 'active', google_id]
     );
     return result;
   }
 
   const result = await pool.query(
-    'INSERT INTO mc."Users" (username, email, password_hash, role, status) VALUES ($1, $2, $3, $4, $5)',
+    'INSERT INTO "Users" (username, email, password_hash, role, status) VALUES ($1, $2, $3, $4, $5)',
     [username, email, password_hash, 'user', 'active']
   );
 
@@ -70,7 +70,7 @@ export const createApprovedUser = async (
 export const findRegistrationByToken = async (token: string) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."RegistrationRequests" WHERE verification_token = $1',
+    'SELECT * FROM "RegistrationRequests" WHERE verification_token = $1',
     [token]
   );
 
@@ -81,7 +81,7 @@ export const findRegistrationByToken = async (token: string) => {
 export const markEmailVerified = async (requestId: number) => {
   const pool = await getPoolSafe();
   await pool.query(
-    `UPDATE mc."RegistrationRequests" 
+    `UPDATE "RegistrationRequests" 
       SET email_verified = true, verification_token = NULL, verification_token_expires = NULL 
       WHERE request_id = $1`,
     [requestId]
@@ -96,7 +96,7 @@ export const updateVerificationToken = async (
 ) => {
   const pool = await getPoolSafe();
   await pool.query(
-    `UPDATE mc."RegistrationRequests"
+    `UPDATE "RegistrationRequests"
       SET verification_token = $1, verification_token_expires = $2
       WHERE request_id = $3`,
     [token, expires, requestId]
@@ -107,7 +107,7 @@ export const updateVerificationToken = async (
 export const findUserByGoogleId = async (googleId: string) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."Users" WHERE google_id = $1',
+    'SELECT * FROM "Users" WHERE google_id = $1',
     [googleId]
   );
 
@@ -118,7 +118,7 @@ export const findUserByGoogleId = async (googleId: string) => {
 export const findUserByEmail = async (email: string) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."Users" WHERE email = $1',
+    'SELECT * FROM "Users" WHERE email = $1',
     [email]
   );
 
@@ -129,7 +129,7 @@ export const findUserByEmail = async (email: string) => {
 export const findRegistrationByGoogleId = async (googleId: string) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."RegistrationRequests" WHERE google_id = $1',
+    'SELECT * FROM "RegistrationRequests" WHERE google_id = $1',
     [googleId]
   );
 
@@ -140,7 +140,7 @@ export const findRegistrationByGoogleId = async (googleId: string) => {
 export const findRegistrationByEmail = async (email: string) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    'SELECT * FROM mc."RegistrationRequests" WHERE email = $1',
+    'SELECT * FROM "RegistrationRequests" WHERE email = $1',
     [email]
   );
 
@@ -156,7 +156,7 @@ export const createGoogleRegistrationRequest = async (
 ) => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    `INSERT INTO mc."RegistrationRequests" 
+    `INSERT INTO "RegistrationRequests" 
       (username, email, password_hash, status, email_verified, google_id) 
       VALUES ($1, $2, $3, $4, $5, $6)`,
     [username, email, '', 'pending', true, googleId]
@@ -173,7 +173,7 @@ export const savePasswordResetToken = async (
 ) => {
   const pool = await getPoolSafe();
   await pool.query(
-    `UPDATE mc."Users" 
+    `UPDATE "Users" 
       SET password_reset_token = $1, password_reset_expires = $2 
       WHERE user_id = $3`,
     [tokenHash, expires, userId]
@@ -184,7 +184,7 @@ export const savePasswordResetToken = async (
 export const findUsersWithResetToken = async () => {
   const pool = await getPoolSafe();
   const result = await pool.query(
-    `SELECT * FROM mc."Users" 
+    `SELECT * FROM "Users" 
       WHERE password_reset_token IS NOT NULL 
       AND password_reset_expires > NOW()`
   );
@@ -199,7 +199,7 @@ export const updatePasswordAndClearResetToken = async (
 ) => {
   const pool = await getPoolSafe();
   await pool.query(
-    `UPDATE mc."Users" 
+    `UPDATE "Users" 
       SET password_hash = $1, 
           password_reset_token = NULL, 
           password_reset_expires = NULL 
