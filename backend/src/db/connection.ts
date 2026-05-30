@@ -1,51 +1,31 @@
-import sql from 'mssql';
+import { Pool } from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-const config: sql.config = {
+const pool = new Pool({
+  host: process.env.DB_HOST || 'localhost',
+  port: parseInt(process.env.DB_PORT || '5432'),
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  server: process.env.DB_SERVER || '',
   database: process.env.DB_NAME,
-  port: parseInt(process.env.DB_PORT || '1433'),
-  options: {
-    encrypt: true,
-    trustServerCertificate: false,
-  },
-  connectionTimeout: 60000, // 60s — allows Azure SQL serverless to wake up
-  requestTimeout: 30000,
-  pool: {
-    max: 10,
-    min: 0,
-    idleTimeoutMillis: 30000,
-  },
-};
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 60000, // 60s — allows cold-start databases to wake up
+});
 
-let pool: sql.ConnectionPool | null = null;
+// Listen for pool errors to log them (pg will handle reconnection automatically)
+pool.on('error', (err) => {
+  console.error('⚠️ Unexpected pool error:', err.message);
+});
 
-export async function connectDB(retries = 3): Promise<sql.ConnectionPool> {
-  // If pool exists but is no longer connected, reset it
-  if (pool && !pool.connected) {
-    console.log('⚠️ Pool disconnected, reconnecting...');
-    try { await pool.close(); } catch { /* ignore close errors */ }
-    pool = null;
-  }
-
-  if (pool) return pool;
-
+export async function connectDB(retries = 3): Promise<Pool> {
   for (let attempt = 1; attempt <= retries; attempt++) {
     try {
       console.log(`🔄 Connecting to database (attempt ${attempt}/${retries})...`);
-      pool = await sql.connect(config);
-      console.log('✅ Connected to Azure SQL database');
-
-      // Listen for pool errors to auto-reconnect
-      pool.on('error', (err) => {
-        console.error('⚠️ Pool error, will reconnect on next request:', err.message);
-        pool = null;
-      });
-
+      const client = await pool.connect();
+      client.release();
+      console.log('✅ Connected to PostgreSQL database');
       return pool;
     } catch (err) {
       console.error(`❌ Attempt ${attempt} failed:`, (err as Error).message);
@@ -58,15 +38,11 @@ export async function connectDB(retries = 3): Promise<sql.ConnectionPool> {
   throw new Error('Database connection failed after all retries');
 }
 
-export function getPool(): sql.ConnectionPool {
-  if (!pool || !pool.connected) {
-    throw new Error('Database not initialized or connection lost. Call connectDB() first.');
-  }
+export function getPool(): Pool {
   return pool;
 }
 
-// Get pool with automatic reconnection — use this in models
-export async function getPoolSafe(): Promise<sql.ConnectionPool> {
-  if (pool && pool.connected) return pool;
-  return connectDB();
+// Get pool — use this in models
+export async function getPoolSafe(): Promise<Pool> {
+  return pool;
 }

@@ -3,20 +3,22 @@ import { getPoolSafe } from '../db/connection';
 // Get all pending registration requests (including email_verified and google_id)
 export const getPendingRequests = async () => {
   const pool = await getPoolSafe();
-  const result = await pool.request()
-    .query("SELECT request_id, username, email, status, requested_at, email_verified, google_id FROM mc.RegistrationRequests WHERE status = 'pending' ORDER BY requested_at DESC");
+  const result = await pool.query(
+    "SELECT request_id, username, email, status, requested_at, email_verified, google_id FROM mc.\"RegistrationRequests\" WHERE status = 'pending' ORDER BY requested_at DESC"
+  );
 
-  return result.recordset;
+  return result.rows;
 };
 
 // Get a single registration request by ID
 export const getRequestById = async (id: number) => {
   const pool = await getPoolSafe();
-  const result = await pool.request()
-    .input('id', id)
-    .query('SELECT * FROM mc.RegistrationRequests WHERE request_id = @id');
+  const result = await pool.query(
+    'SELECT * FROM mc."RegistrationRequests" WHERE request_id = $1',
+    [id]
+  );
 
-  return result.recordset[0];
+  return result.rows[0];
 };
 
 // Approve a registration request
@@ -33,28 +35,22 @@ export const approveRequest = async (id: number) => {
   }
 
   // Update RegistrationRequests status to 'approved'
-  await pool.request()
-    .input('id', id)
-    .query("UPDATE mc.RegistrationRequests SET status = 'approved', reviewed_at = GETDATE() WHERE request_id = @id");
+  await pool.query(
+    "UPDATE mc.\"RegistrationRequests\" SET status = 'approved', reviewed_at = NOW() WHERE request_id = $1",
+    [id]
+  );
 
   // Insert into mc.Users (include google_id if present)
   if (request.google_id) {
-    await pool.request()
-      .input('username', request.username)
-      .input('email', request.email)
-      .input('password_hash', request.password_hash || '')
-      .input('role', 'user')
-      .input('status', 'active')
-      .input('google_id', request.google_id)
-      .query('INSERT INTO mc.Users (username, email, password_hash, role, status, google_id) VALUES (@username, @email, @password_hash, @role, @status, @google_id)');
+    await pool.query(
+      'INSERT INTO mc."Users" (username, email, password_hash, role, status, google_id) VALUES ($1, $2, $3, $4, $5, $6)',
+      [request.username, request.email, request.password_hash || '', 'user', 'active', request.google_id]
+    );
   } else {
-    await pool.request()
-      .input('username', request.username)
-      .input('email', request.email)
-      .input('password_hash', request.password_hash)
-      .input('role', 'user')
-      .input('status', 'active')
-      .query('INSERT INTO mc.Users (username, email, password_hash, role, status) VALUES (@username, @email, @password_hash, @role, @status)');
+    await pool.query(
+      'INSERT INTO mc."Users" (username, email, password_hash, role, status) VALUES ($1, $2, $3, $4, $5)',
+      [request.username, request.email, request.password_hash, 'user', 'active']
+    );
   }
 
   return request;
@@ -73,9 +69,10 @@ export const denyRequest = async (id: number) => {
     throw new Error('Request has already been processed');
   }
 
-  await pool.request()
-    .input('id', id)
-    .query("UPDATE mc.RegistrationRequests SET status = 'denied', reviewed_at = GETDATE() WHERE request_id = @id");
+  await pool.query(
+    "UPDATE mc.\"RegistrationRequests\" SET status = 'denied', reviewed_at = NOW() WHERE request_id = $1",
+    [id]
+  );
 
   return request;
 };

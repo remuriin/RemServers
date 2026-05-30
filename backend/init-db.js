@@ -1,54 +1,36 @@
 require("dotenv").config();
-const sql = require("mssql");
+const { Client } = require("pg");
 const fs = require("fs");
 const path = require("path");
 
 const config = {
+  host: process.env.DB_HOST || "localhost",
+  port: parseInt(process.env.DB_PORT || "5432"),
   user: process.env.DB_USER,
   password: process.env.DB_PASS,
-  server: process.env.DB_SERVER,
   database: process.env.DB_NAME,
-  options: {
-    encrypt: true,
-    trustServerCertificate: false,
-  },
 };
 
 async function initializeDatabase() {
+  const client = new Client(config);
   try {
     // 1. Path to your schema file (make sure it's named correctly in your folder)
     const schemaPath = path.join(__dirname, "mc_server_registration_schema.sql");
     const schemaSql = fs.readFileSync(schemaPath, "utf8");
 
-    console.log("Connecting to Azure...");
-    const pool = await sql.connect(config);
+    console.log("Connecting to PostgreSQL...");
+    await client.connect();
 
-    // 2. The Fix: Split the file into separate batches at every "GO" line
-    // This regex looks for "GO" on its own line, ignoring case and surrounding whitespace
-    const batches = schemaSql.split(/^\s*GO\s*$/im);
-
-    console.log(`Found ${batches.length} batches to execute.`);
-
-    for (let i = 0; i < batches.length; i++) {
-      const batch = batches[i].trim();
-
-      // Skip empty batches (often happens at the end of the file)
-      if (batch.length === 0) continue;
-
-      try {
-        console.log(`Executing batch ${i + 1}...`);
-        await pool.request().batch(batch);
-      } catch (batchErr) {
-        console.error(`❌ Error in batch ${i + 1}:`, batchErr.message);
-        // Optional: stop execution if a batch fails
-        throw batchErr;
-      }
-    }
+    // 2. Execute the entire schema file as a single statement
+    // PostgreSQL does not use GO batch separators
+    console.log("Executing schema...");
+    await client.query(schemaSql);
 
     console.log("✅ Database schema initialized successfully!");
-    await sql.close();
   } catch (err) {
     console.error("❌ Critical Initialization Error:", err.message);
+  } finally {
+    await client.end();
   }
 }
 
