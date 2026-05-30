@@ -6,6 +6,7 @@ import authRoutes from './routes/authRoutes';
 import dashboardRoutes from './routes/dashboardRoutes';
 import adminRoutes from './routes/adminRoutes';
 import userRoutes from './routes/userRoutes';
+import serverRoutes from './routes/serverRoutes';
 import { connectDB } from './db/connection';
 import cors from 'cors';
 
@@ -45,6 +46,7 @@ app.use('/api/auth', authRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
+app.use('/api/servers', serverRoutes);
 
 async function startServer() {
   try {
