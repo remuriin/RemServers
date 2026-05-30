@@ -41,10 +41,10 @@ app.get('/', (req: Request, res: Response) => {
   res.json({ message: 'Hello from Rem Servers API!' });
 });
 
-app.use('/auth', authRoutes);
-app.use('/dashboard', dashboardRoutes);
-app.use('/admin', adminRoutes);
-app.use('/users', userRoutes);
+app.use('/api/auth', authRoutes);
+app.use('/api/dashboard', dashboardRoutes);
+app.use('/api/admin', adminRoutes);
+app.use('/api/users', userRoutes);
 
 async function startServer() {
   try {
