@@ -22,7 +22,7 @@ router.get('/google', (req: Request, res: Response, next: NextFunction) => {
 
 // Google OAuth — callback
 router.get('/google/callback', (req: Request, res: Response, next: NextFunction) => {
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
+  const frontendUrl = process.env.FRONTEND_URL || 'https://portal.remservers.me';
 
   passport.authenticate('google', { session: false }, async (err: any, user: any) => {
     if (err || !user) {
