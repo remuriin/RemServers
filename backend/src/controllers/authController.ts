@@ -250,19 +250,18 @@ export const register = async (req: Request, res: Response) => {
 // GET /auth/verify-email/:token — verify email via token link
 export const verifyEmail = async (req: Request, res: Response) => {
   const token = req.params.token as string;
-  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
 
   try {
     const request = await findRegistrationByToken(token);
 
     if (!request) {
-      res.redirect(`${frontendUrl}/login?error=invalid_token`);
+      res.status(400).json({ error: 'Invalid or expired verification link.' });
       return;
     }
 
     // Check if token is expired
     if (request.verification_token_expires && new Date(request.verification_token_expires) < new Date()) {
-      res.redirect(`${frontendUrl}/login?error=token_expired`);
+      res.status(400).json({ error: 'Verification link has expired. Please request a new one.' });
       return;
     }
 
@@ -286,10 +285,10 @@ export const verifyEmail = async (req: Request, res: Response) => {
       console.warn(`[Verify] Failed to send admin notification for '${request.username}':`, (emailErr as Error).message);
     }
 
-    res.redirect(`${frontendUrl}/login?verified=true`);
+    res.json({ message: 'Your email has been verified successfully!' });
   } catch (err) {
     console.error('Verify email error:', (err as Error).message);
-    res.redirect(`${frontendUrl}/login?error=verification_failed`);
+    res.status(500).json({ error: 'Verification failed. Please try again later.' });
   }
 };
 

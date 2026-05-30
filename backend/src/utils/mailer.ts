@@ -13,9 +13,9 @@ console.log('[Mailer] ENV CHECK — FRONTEND:', process.env.FRONTEND_URL);
 console.log('[Mailer] ENV CHECK — APP_URL:', process.env.APP_URL);
 
 export const sendVerificationEmail = async (to: string, token: string) => {
-  const appUrl = process.env.APP_URL || 'http://localhost:3000';
+  const frontendUrl = process.env.FRONTEND_URL || 'http://localhost:5173';
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'noreply@remservers.me';
-  const verificationLink = `${appUrl}/auth/verify-email/${token}`;
+  const verificationLink = `${frontendUrl}/verify-email/${token}`;
 
   console.log(`[Mailer] Attempting to send verification email to: ${to} from: ${fromEmail}`);
 

@@ -7,6 +7,7 @@ import Login from './src/views/login'
 import Register from './src/views/register'
 import ForgotPassword from './src/views/forgot-password'
 import ResetPassword from './src/views/reset-password'
+import VerifyEmail from './src/views/verify-email'
 import Dashboard from './src/views/dashboard'
 import Admin from './src/views/admin'
 import Portal from './src/views/portal'
@@ -23,6 +24,7 @@ createRoot(document.getElementById('root')!).render(
           <Route path="/register" element={<Register />} />
           <Route path="/forgot-password" element={<ForgotPassword />} />
           <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="/verify-email/:token" element={<VerifyEmail />} />
         </Route>
 
         {/* App pages — no background animation */}

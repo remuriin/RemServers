@@ -11,7 +11,7 @@ import '../css/auth-layout.css';
 function AuthLayout() {
   const location = useLocation();
   const outlet = useOutlet();
-  const isAuthPage = ['/login', '/register', '/forgot-password', '/reset-password'].includes(location.pathname);
+  const isAuthPage = ['/login', '/register', '/forgot-password', '/reset-password'].includes(location.pathname) || location.pathname.startsWith('/verify-email');
 
   const [renderedOutlet, setRenderedOutlet] = useState(outlet);
   const [renderedPath, setRenderedPath] = useState(location.pathname);
