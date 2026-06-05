@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Cog, ClipboardList, BarChart3, Settings, User, Check, X, LogOut, AlertCircle, Mail, ShieldCheck } from 'lucide-react';
+import { Cog, ClipboardList, BarChart3, Settings, User, Check, X, LogOut, AlertCircle, Mail, ShieldCheck, ArrowLeft } from 'lucide-react';
 import { API_URL } from '../config/api';
 import '../css/global.css';
 import '../css/admin.css';
@@ -295,6 +295,9 @@ function Admin() {
           <h2 className="sidebar-title">Rem Servers</h2>
         </div>
         <nav className="sidebar-nav">
+          <button className="sidebar-link back-to-portal-btn" onClick={() => navigate('/portal')}>
+            <span className="sidebar-icon"><ArrowLeft size={20} strokeWidth={1.5} /></span>Back to Portal
+          </button>
           <button className={`sidebar-link ${activeTab === 'requests' ? 'active' : ''}`} onClick={() => setActiveTab('requests')}>
             <span className="sidebar-icon"><ClipboardList size={20} strokeWidth={1.5} /></span>Admin Panel
           </button>

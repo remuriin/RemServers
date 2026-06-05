@@ -82,6 +82,20 @@
   line-height: 1;
 }
 
+/* ── Back to Portal Button ─────────────────────────────────── */
+.admin-sidebar .back-to-portal-btn {
+  color: var(--color-accent-primary);
+  margin-bottom: 8px;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
+}
+
+.admin-sidebar .back-to-portal-btn:hover {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent-hover);
+}
+
 .admin-sidebar .sidebar-footer {
   padding-top: 16px;
   border-top: 1px solid var(--color-border-default);

@@ -37,11 +37,7 @@ function Login() {
         localStorage.setItem('username', payload.username);
         localStorage.setItem('role', payload.role);
         localStorage.setItem('status', payload.status || 'active');
-        if (payload.role === 'admin') {
-          navigate('/admin', { replace: true });
-        } else {
-          navigate('/portal', { replace: true });
-        }
+        navigate('/portal', { replace: true });
       } catch {
         setError('Invalid authentication token');
       }
@@ -108,12 +104,8 @@ function Login() {
         // Clear any pending user data from registration
         localStorage.removeItem('pendingUser');
 
-        // Redirect based on role
-        if (data.role === 'admin') {
-          navigate('/admin');
-        } else {
-          navigate('/portal');
-        }
+        // Redirect to portal for all roles
+        navigate('/portal');
       }
     } catch (err) {
       console.error('Login error:', (err as Error).message);

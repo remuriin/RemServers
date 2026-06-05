@@ -142,6 +142,33 @@
   border-color: var(--color-coral);
 }
 
+/* ── Admin Dashboard Button ────────────────────────────────── */
+.admin-dashboard-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border-accent);
+  background: var(--color-accent-subtle);
+  color: var(--color-accent-primary);
+  font-size: 0.88rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition:
+    background-color 0.18s ease,
+    box-shadow 0.18s ease,
+    transform 0.1s ease;
+}
+
+.admin-dashboard-btn:hover {
+  background-color: var(--color-accent-primary);
+  color: white;
+  box-shadow: var(--shadow-accent);
+  transform: translateY(-1px);
+}
+
 /* ── Main Content ──────────────────────────────────────────── */
 .portal-main {
   flex: 1;
@@ -196,56 +223,55 @@
   font-size: 0.92rem;
 }
 
-/* ── Server List ───────────────────────────────────────────── */
-.server-list {
+/* ── Server Grid ──────────────────────────────────────────── */
+.server-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* ── Server Card ──────────────────────────────────────────── */
+.server-card {
   display: flex;
   flex-direction: column;
   gap: 12px;
-}
-
-.server-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 16px 20px;
+  padding: 20px;
   background-color: var(--color-bg-surface);
   border: 1px solid var(--color-border-default);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-lg);
   box-shadow: var(--shadow-xs);
   transition: box-shadow 0.2s ease, transform 0.12s ease;
 }
 
 .server-card:hover {
   box-shadow: var(--shadow-sm);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
-.server-card-left {
+.server-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.server-card-title-row {
   display: flex;
   align-items: center;
-  gap: 14px;
+  gap: 10px;
+  min-width: 0;
 }
 
-.server-status-dot {
-  width: 10px;
-  height: 10px;
-  border-radius: var(--radius-full);
+.server-card-icon {
+  color: var(--color-accent-primary);
   flex-shrink: 0;
-}
-
-.server-status-dot.status-online {
-  background-color: var(--color-teal);
-  box-shadow: 0 0 6px rgba(29, 158, 117, 0.5);
-}
-
-.server-status-dot.status-offline {
-  background-color: var(--color-text-tertiary);
 }
 
 .server-info {
   display: flex;
   flex-direction: column;
   gap: 2px;
+  min-width: 0;
 }
 
 .server-name {
@@ -253,6 +279,9 @@
   font-weight: 600;
   color: var(--color-text-primary);
   margin: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .server-game {
@@ -261,69 +290,338 @@
   font-weight: 500;
 }
 
-.server-card-right {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-
-.server-meta {
-  display: flex;
-  align-items: center;
-  gap: 14px;
-}
-
-.server-players {
+/* ── Status Badge ─────────────────────────────────────────── */
+.server-status-badge {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  font-size: 0.82rem;
-  font-weight: 500;
-  color: var(--color-text-secondary);
-}
-
-.server-status-label {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 0.75rem;
+  font-size: 0.72rem;
   font-weight: 600;
-  padding: 3px 10px;
+  padding: 4px 10px;
   border-radius: var(--radius-full);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.server-status-label.label-online {
+.server-status-badge.status-online {
   background-color: rgba(29, 158, 117, 0.12);
   color: var(--color-teal);
 }
 
-.server-status-label.label-offline {
+.server-status-badge.status-starting {
+  background-color: rgba(186, 117, 23, 0.12);
+  color: var(--color-amber);
+}
+
+.server-status-badge.status-offline {
   background-color: rgba(120, 120, 130, 0.1);
   color: var(--color-text-tertiary);
 }
 
+.status-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.status-dot.status-online {
+  background-color: var(--color-teal);
+  box-shadow: 0 0 6px rgba(29, 158, 117, 0.5);
+}
+
+.status-dot.status-starting {
+  background-color: var(--color-amber);
+  box-shadow: 0 0 6px rgba(186, 117, 23, 0.4);
+  animation: pulse-dot 1.5s ease-in-out infinite;
+}
+
+.status-dot.status-offline {
+  background-color: var(--color-text-tertiary);
+}
+
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.4; }
+}
+
+/* ── Tag Pills ────────────────────────────────────────────── */
+.server-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.server-tag-pill {
+  display: inline-block;
+  padding: 2px 10px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  text-transform: lowercase;
+  letter-spacing: 0.02em;
+  border: 1px solid var(--color-border-default);
+}
+
+/* ── Server Card Footer ──────────────────────────────────── */
+.server-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.server-address {
+  min-width: 0;
+}
+
+.server-ip-label {
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
+  font-family: 'DM Sans', monospace;
+}
+
+.server-actions {
+  flex-shrink: 0;
+}
+
+/* ── Join Button ──────────────────────────────────────────── */
 .server-join-btn {
-  padding: 6px 18px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
   border-radius: var(--radius-sm);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 600;
   border: none;
   cursor: pointer;
   background-color: var(--color-accent-primary);
   color: white;
+  text-decoration: none;
   transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
 }
 
-.server-join-btn:hover:not(:disabled) {
+.server-join-btn:hover:not(:disabled):not(.disabled) {
   background-color: var(--color-accent-hover);
   box-shadow: var(--shadow-accent);
   transform: translateY(-1px);
 }
 
-.server-join-btn:disabled {
+.server-join-btn:disabled,
+.server-join-btn.disabled {
   background-color: var(--color-bg-subtle);
   color: var(--color-text-tertiary);
   cursor: not-allowed;
+  pointer-events: auto;
+}
+
+/* ── Cracked MC join layout ──────────────────────────────── */
+.server-join-cracked {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.server-ip-display {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  font-family: 'DM Sans', monospace;
+}
+
+.server-copy-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
+}
+
+.server-copy-btn:hover:not(:disabled) {
+  background-color: var(--color-accent-subtle);
+  color: var(--color-accent-primary);
+  border-color: var(--color-border-accent);
+}
+
+.server-copy-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Power Controls ───────────────────────────────────────── */
+.server-power-controls {
+  display: flex;
+  gap: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.power-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex: 1;
+  justify-content: center;
+  padding: 7px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.78rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+}
+
+.power-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  transform: none !important;
+  box-shadow: none !important;
+}
+
+.power-start {
+  background-color: var(--color-teal);
+  color: white;
+}
+
+.power-start:hover:not(:disabled) {
+  background-color: #178a65;
+  box-shadow: 0 2px 12px rgba(29, 158, 117, 0.35);
+  transform: translateY(-1px);
+}
+
+.power-stop {
+  background-color: var(--color-coral);
+  color: white;
+}
+
+.power-stop:hover:not(:disabled) {
+  background-color: #c04a28;
+  box-shadow: 0 2px 12px rgba(216, 90, 48, 0.35);
+  transform: translateY(-1px);
+}
+
+.power-restart {
+  background-color: var(--color-amber);
+  color: white;
+}
+
+.power-restart:hover:not(:disabled) {
+  background-color: #a56812;
+  box-shadow: 0 2px 12px rgba(186, 117, 23, 0.35);
+  transform: translateY(-1px);
+}
+
+/* ── Power Button Spinner ─────────────────────────────────── */
+.power-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+/* ── Loading & Error States ───────────────────────────────── */
+.server-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  gap: 16px;
+}
+
+.server-loading p {
+  font-size: 0.92rem;
+  color: var(--color-text-tertiary);
+}
+
+.loading-spinner {
+  width: 36px;
+  height: 36px;
+  border: 3px solid var(--color-border-default);
+  border-top-color: var(--color-accent-primary);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+.server-error {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 80px 40px;
+  gap: 12px;
+  color: var(--color-text-tertiary);
+}
+
+.server-error p {
+  font-size: 0.92rem;
+  color: var(--color-coral);
+}
+
+.retry-btn {
+  padding: 8px 20px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+  color: var(--color-text-secondary);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease;
+}
+
+.retry-btn:hover {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-primary);
+}
+
+/* ── Toast Notification ───────────────────────────────────── */
+.toast-notification {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 12px 24px;
+  background-color: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  border: 1px solid var(--color-border-default);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+  font-size: 0.88rem;
+  font-weight: 500;
+  z-index: 2000;
+  animation: toastIn 0.25s ease, toastOut 0.3s ease 2.7s forwards;
+  white-space: nowrap;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(12px); }
 }
 
 /* ── Unverified Label ──────────────────────────────────────── */
@@ -374,7 +672,13 @@
   max-width: 400px;
 }
 
-/* ── Responsive: Tablet — icon-only sidebar ────────────────── */
+/* ── Responsive: Tablet ────────────────────────────────────── */
+@media (max-width: 1024px) {
+  .server-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 @media (max-width: 768px) {
   .portal-sidebar {
     width: 64px;
@@ -387,7 +691,8 @@
   .portal-sidebar .sidebar-link span:not(.sidebar-icon),
   .portal-sidebar .logout-btn span:not(.sidebar-icon),
   .portal-username,
-  .portal-unverified-label {
+  .portal-unverified-label,
+  .admin-dashboard-btn span {
     display: none;
   }
 
@@ -441,8 +746,17 @@
   .portal-locked-section {
     padding: 48px 24px;
   }
-}
 
+  .admin-dashboard-btn {
+    justify-content: center;
+    padding: 10px;
+    gap: 0;
+  }
+
+  .server-grid {
+    grid-template-columns: 1fr;
+  }
+}
 
 /* ── Mobile Logout Button (hidden on desktop/tablet) ───────── */
 .portal-sidebar .mobile-logout-btn {
@@ -513,6 +827,18 @@
   .portal-sidebar .mobile-logout-btn {
     display: flex;
     color: var(--color-coral) !important;
+  }
+
+  .server-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .server-power-controls {
+    flex-wrap: wrap;
+  }
+
+  .power-btn {
+    flex: 1 1 calc(50% - 4px);
   }
 }
 
