@@ -1,14 +1,23 @@
 /* ── Portal Layout ──────────────────────────────────────────── */
 .portal-body {
+  position: relative;
   display: flex;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
-  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat fixed;
+  /* NO overflow: hidden — it breaks backdrop-filter on descendants */
+}
+
+/* Background as separate layer behind glass cards */
+.portal-body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat;
 }
 
 @media (prefers-color-scheme: light) {
-  .portal-body {
+  .portal-body::before {
     background-image: url('../assets/landingpage-light-bg.jpg');
   }
 }
@@ -27,6 +36,7 @@
   border-right-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
   padding: 24px 16px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
+  isolation: isolate;
 }
 
 .portal-sidebar .sidebar-header {
@@ -223,6 +233,7 @@
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
   text-align: center;
+  isolation: isolate;
 }
 
 .portal-content-placeholder .placeholder-icon {
@@ -269,6 +280,7 @@
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
   transition: box-shadow 0.2s ease, transform 0.12s ease;
+  isolation: isolate;
 }
 
 .server-card:hover {
@@ -649,6 +661,7 @@
   z-index: 2000;
   animation: toastIn 0.25s ease, toastOut 0.3s ease 2.7s forwards;
   white-space: nowrap;
+  isolation: isolate;
 }
 
 @keyframes toastIn {
@@ -697,6 +710,7 @@
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
   text-align: center;
+  isolation: isolate;
 }
 
 .portal-locked-section .locked-icon {
@@ -923,6 +937,7 @@
   width: 90%;
   max-width: 380px;
   animation: dialogSlideIn 0.2s ease;
+  isolation: isolate;
 }
 
 @keyframes dialogSlideIn {

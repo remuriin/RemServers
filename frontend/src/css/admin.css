@@ -1,14 +1,23 @@
 /* ── Admin Layout ───────────────────────────────────────────── */
 .admin-body {
+  position: relative;
   display: flex;
   width: 100vw;
   height: 100vh;
-  overflow: hidden;
-  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat fixed;
+  /* NO overflow: hidden — it breaks backdrop-filter on descendants */
+}
+
+/* Background as separate layer behind glass cards */
+.admin-body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat;
 }
 
 @media (prefers-color-scheme: light) {
-  .admin-body {
+  .admin-body::before {
     background-image: url('../assets/landingpage-light-bg.jpg');
   }
 }
@@ -27,6 +36,7 @@
   border-right-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
   padding: 24px 16px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
+  isolation: isolate;
 }
 
 .admin-sidebar .sidebar-header {
@@ -207,6 +217,7 @@
   border: 1px solid light-dark(rgba(255, 255, 255, 0.3), rgba(170, 170, 170, 0.15));
   border-radius: var(--radius-full);
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
+  isolation: isolate;
 }
 
 .stat-chip-count {
@@ -268,7 +279,7 @@
   border-bottom-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
-  overflow: hidden;
+  isolation: isolate;
 }
 
 .admin-table-section .table-wrapper {
@@ -467,6 +478,7 @@
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
   text-align: center;
+  isolation: isolate;
 }
 
 .admin-content-placeholder .placeholder-icon {
@@ -524,8 +536,8 @@
   border-bottom-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
-  overflow: hidden;
   flex-shrink: 0;
+  isolation: isolate;
 }
 
 .request-card-header {
@@ -820,6 +832,7 @@
   width: 90%;
   max-width: 380px;
   animation: dialogSlideIn 0.2s ease;
+  isolation: isolate;
 }
 
 @keyframes dialogSlideIn {

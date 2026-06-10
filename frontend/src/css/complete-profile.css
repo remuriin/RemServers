@@ -7,11 +7,20 @@
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat fixed;
+  /* NO overflow, transform, or filter — they break backdrop-filter */
+}
+
+/* Background as separate layer behind glass card */
+.complete-profile-body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat;
 }
 
 @media (prefers-color-scheme: light) {
-  .complete-profile-body {
+  .complete-profile-body::before {
     background-image: url('../assets/landingpage-light-bg.jpg');
   }
 }
@@ -37,6 +46,7 @@
   padding: 32px 0;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
   color: var(--color-text-primary);
+  isolation: isolate;
 }
 
 .complete-profile-subtitle {

@@ -33,6 +33,7 @@
   border-bottom-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
   border-radius: 10px;
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
+  isolation: isolate;
 }
 
 .hero-icon {
@@ -161,6 +162,7 @@
     transform 0.15s ease;
   opacity: 0;
   animation: cardFadeIn 0.35s ease-out forwards;
+  isolation: isolate;
 }
 
 @keyframes cardFadeIn {

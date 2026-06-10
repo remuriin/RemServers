@@ -3,11 +3,11 @@
   position: relative;
   width: 100vw;
   min-height: 100vh;
-  overflow: hidden;
-  background: var(--color-bg-base);
+  /* NO overflow: hidden — it breaks backdrop-filter on descendants */
+  /* NO opaque background — it would block the bg image from showing through glass */
 }
 
-/* ── Background (GPU-accelerated pan via transform) ────────── */
+/* ── Background (separate fixed layer behind everything) ───── */
 .auth-bg {
   position: fixed;
   top: 0;
@@ -17,7 +17,8 @@
   z-index: 0;
 
   background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat;
-  will-change: transform;
+  /* Removed will-change: transform — it creates a containing block that breaks
+     backdrop-filter in descendant glass cards */
   transform: translate(0, 0);
   transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -33,38 +34,32 @@
   transform: translate(-44vw, -44vh);
 }
 
-/* ── Dark overlay for readability ──────────────────────────── */
-/* .auth-bg__overlay {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  background: light-dark(rgba(255, 255, 255, 0.25), rgba(0, 0, 0, 0.35));
-  pointer-events: none;
-} */
-
 /* ── Content layer ─────────────────────────────────────────── */
 .auth-content {
   position: relative;
   z-index: 1;
   min-height: 100vh;
+  /* NO overflow, transform, or filter here */
 }
 
 .auth-content--fade-in {
-  animation: fadeIn 0.25s ease-out;
+  animation: authFadeIn 0.25s ease-out;
 }
 
 .auth-content--fade-out {
-  animation: fadeOut 0.2s ease-in forwards;
+  animation: authFadeOut 0.2s ease-in forwards;
 }
 
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
+/* Using opacity-only animations — translateY during animation applies
+   a temporary transform that breaks backdrop-filter mid-animation */
+@keyframes authFadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-@keyframes fadeOut {
-  from { opacity: 1; transform: translateY(0); }
-  to   { opacity: 0; transform: translateY(-6px); }
+@keyframes authFadeOut {
+  from { opacity: 1; }
+  to   { opacity: 0; }
 }
 
 /* ── Reduced motion ────────────────────────────────────────── */

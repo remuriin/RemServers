@@ -32,6 +32,7 @@
   /* border-color: light-dark(rgba(10, 10, 10, 0.4), rgba(170, 170, 170, 0.4)); */
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
   color: var(--color-text-primary);
+  isolation: isolate;
 }
 
 .register-window h1 {
