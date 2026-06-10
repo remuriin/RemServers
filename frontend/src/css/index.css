@@ -19,6 +19,20 @@
   align-items: center;
   text-align: center;
   max-width: 560px;
+  padding: 40px 48px;
+  background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 2px solid;
+  border-left: 2px solid;
+  border-right: 2px solid;
+  border-bottom: 2px solid;
+  border-top-color: light-dark(rgba(255, 255, 255, 1), rgba(170, 170, 170, 0.3));
+  border-left-color: light-dark(rgba(255, 255, 255, 1), rgba(170, 170, 170, 0.2));
+  border-right-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
+  border-bottom-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
 }
 
 .hero-icon {
@@ -128,8 +142,8 @@
   align-items: center;
   gap: 12px;
   padding: 14px 18px;
-  background: light-dark(rgba(249, 249, 249, 0.1), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(5px);
+  background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
+  backdrop-filter: blur(12px);
   -webkit-backdrop-filter: blur(12px);
   border-top: 2px solid;
   border-left: 2px solid;

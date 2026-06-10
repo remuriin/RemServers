@@ -55,11 +55,7 @@ router.get('/google/callback', (req: Request, res: Response, next: NextFunction)
           { expiresIn: '24h' }
         );
 
-        if (existingUser.role === 'admin') {
-          return res.redirect(`${frontendUrl}/admin?token=${token}`);
-        } else {
-          return res.redirect(`${frontendUrl}/portal?token=${token}`);
-        }
+        return res.redirect(`${frontendUrl}/portal?token=${token}`);
       }
 
       // ── Step 1b: Check mc.Users by email (fallback for approved users) ──
@@ -78,11 +74,7 @@ router.get('/google/callback', (req: Request, res: Response, next: NextFunction)
           { expiresIn: '24h' }
         );
 
-        if (existingUserByEmail.role === 'admin') {
-          return res.redirect(`${frontendUrl}/admin?token=${token}`);
-        } else {
-          return res.redirect(`${frontendUrl}/portal?token=${token}`);
-        }
+        return res.redirect(`${frontendUrl}/portal?token=${token}`);
       }
 
       // ── Step 2: Check mc.RegistrationRequests by google_id ──
