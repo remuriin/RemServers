@@ -5,28 +5,13 @@ import {
   getServerById,
   getMyServers,
   sendPowerAction,
-  getServerResources,
 } from '../models/serverModel';
 
 // GET /api/servers — fetch all visible servers (public)
 export const listServers = async (req: AuthRequest, res: Response) => {
   try {
     const servers = await getAllServers();
-
-    // Enrich each server with live status from the Client API
-    const enriched = await Promise.all(
-      servers.map(async (s) => {
-        if (!s.identifier) return s;
-        try {
-          const resources = await getServerResources(s.identifier);
-          return { ...s, status: resources.current_state || s.status };
-        } catch {
-          return s; // fallback — panel may be unreachable for this server
-        }
-      }),
-    );
-
-    res.json({ servers: enriched });
+    res.json({ servers });
   } catch (err) {
     console.error('[Servers] listServers error:', (err as Error).message);
     res.status(500).json({ error: 'Failed to fetch servers.' });
@@ -43,21 +28,7 @@ export const myServers = async (req: AuthRequest, res: Response) => {
     }
 
     const servers = await getMyServers(userId);
-
-    // Enrich with live status
-    const enriched = await Promise.all(
-      servers.map(async (s) => {
-        if (!s.identifier) return s;
-        try {
-          const resources = await getServerResources(s.identifier);
-          return { ...s, status: resources.current_state || s.status };
-        } catch {
-          return s;
-        }
-      }),
-    );
-
-    res.json({ servers: enriched });
+    res.json({ servers });
   } catch (err) {
     console.error('[Servers] myServers error:', (err as Error).message);
     res.status(500).json({ error: 'Failed to fetch your servers.' });
@@ -77,16 +48,6 @@ export const serverDetails = async (req: AuthRequest, res: Response) => {
     if (!server) {
       res.status(404).json({ error: 'Server not found.' });
       return;
-    }
-
-    // Enrich with live status
-    if (server.identifier) {
-      try {
-        const resources = await getServerResources(server.identifier);
-        server.status = resources.current_state || server.status;
-      } catch {
-        // keep original status
-      }
     }
 
     res.json({ server });

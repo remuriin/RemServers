@@ -30,8 +30,8 @@
   min-width: 260px;
   height: 100vh;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-right: 2px solid;
   border-right-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
   padding: 24px 16px;
@@ -212,8 +212,8 @@
   gap: 8px;
   padding: 8px 16px;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border: 1px solid light-dark(rgba(255, 255, 255, 0.3), rgba(170, 170, 170, 0.15));
   border-radius: var(--radius-full);
   box-shadow: 2px 2px 2px rgba(0, 0, 0, 0.089);
@@ -267,8 +267,8 @@
 /* ── Table Section ─────────────────────────────────────────── */
 .admin-table-section {
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;
@@ -465,8 +465,8 @@
   justify-content: center;
   padding: 80px 40px;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;
@@ -524,8 +524,8 @@
 
 .admin-request-card {
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;
@@ -816,8 +816,8 @@
 
 .logout-dialog {
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;

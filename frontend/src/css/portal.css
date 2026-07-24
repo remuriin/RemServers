@@ -30,8 +30,8 @@
   min-width: 260px;
   height: 100vh;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-right: 2px solid;
   border-right-color: light-dark(rgba(255, 255, 255, 0.1), rgba(100, 100, 100, 0.15));
   padding: 24px 16px;
@@ -191,12 +191,30 @@
 
 /* ── Main Content ──────────────────────────────────────────── */
 .portal-main {
+  position: relative;
   flex: 1;
   padding: 32px 40px;
   overflow-y: auto;
-  background-color: transparent;
 }
 
+/* Background layer inside the scroll container so backdrop-filter has content to blur */
+.portal-main::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 260px; /* sidebar width */
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  background: url('../assets/landingpage-dark-bg.jpg') center / cover no-repeat;
+  pointer-events: none;
+}
+
+@media (prefers-color-scheme: light) {
+  .portal-main::before {
+    background-image: url('../assets/landingpage-light-bg.jpg');
+  }
+}
 .portal-header {
   margin-bottom: 28px;
 }
@@ -220,8 +238,8 @@
   justify-content: center;
   padding: 80px 40px;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;
@@ -256,7 +274,7 @@
 /* ── Server Grid ──────────────────────────────────────────── */
 .server-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: 1fr;
   gap: 16px;
 }
 
@@ -265,10 +283,10 @@
   display: flex;
   flex-direction: column;
   gap: 12px;
-  padding: 20px;
+  padding: 24px;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;
@@ -328,6 +346,31 @@
   font-size: 0.78rem;
   color: var(--color-text-tertiary);
   font-weight: 500;
+}
+
+/* ── Server Description ──────────────────────────────────── */
+.server-description {
+  font-size: 0.85rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+/* ── Server Meta Row (owner + versions) ──────────────────── */
+.server-meta-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.server-meta-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  color: var(--color-text-tertiary);
 }
 
 /* ── Status Badge ─────────────────────────────────────────── */
@@ -405,7 +448,339 @@
   border: 1px solid var(--color-border-default);
 }
 
-/* ── Server Card Footer ──────────────────────────────────── */
+/* ── Register / Whitelist Button ─────────────────────────── */
+.server-register-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 16px;
+  border-radius: var(--radius-sm);
+  font-size: 0.8rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-accent-primary);
+  color: white;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease, transform 0.1s ease;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.server-register-btn:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+  box-shadow: var(--shadow-accent);
+  transform: translateY(-1px);
+}
+
+.server-register-btn.pending {
+  background-color: rgba(186, 117, 23, 0.12);
+  color: var(--color-amber);
+  cursor: default;
+}
+
+.server-register-btn.whitelisted {
+  background-color: rgba(29, 158, 117, 0.12);
+  color: var(--color-teal);
+  cursor: default;
+}
+
+.server-register-btn.denied {
+  background-color: rgba(216, 90, 48, 0.12);
+  color: var(--color-coral);
+  cursor: pointer;
+}
+
+.server-cancel-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid var(--color-border-default);
+  background: none;
+  color: var(--color-text-tertiary);
+  cursor: pointer;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+
+.server-cancel-btn:hover {
+  color: var(--color-coral);
+  border-color: var(--color-coral);
+}
+
+/* ── Expanded Card Registration Form ─────────────────────── */
+.server-register-section {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+  padding: 0 0;
+}
+
+.server-register-section.open {
+  max-height: 300px;
+  opacity: 1;
+  padding: 16px 0 4px;
+}
+
+.register-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding-top: 12px;
+  border-top: 1px solid var(--color-border-default);
+}
+
+.register-notice {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  font-size: 0.78rem;
+  color: var(--color-amber);
+  background-color: rgba(186, 117, 23, 0.08);
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid rgba(186, 117, 23, 0.2);
+  line-height: 1.4;
+}
+
+.register-notice svg { flex-shrink: 0; margin-top: 1px; }
+
+.register-input-row {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.register-input {
+  flex: 1;
+  padding: 9px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border-default);
+  background: var(--color-bg-surface);
+  color: var(--color-text-primary);
+  font-size: 0.88rem;
+  font-family: 'DM Sans', monospace;
+  outline: none;
+  transition: border-color 0.15s ease;
+}
+
+.register-input:focus {
+  border-color: var(--color-accent-primary);
+}
+
+.register-submit-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 20px;
+  border-radius: var(--radius-sm);
+  font-size: 0.85rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  background-color: var(--color-accent-primary);
+  color: white;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+  white-space: nowrap;
+}
+
+.register-submit-btn:hover:not(:disabled) {
+  background-color: var(--color-accent-hover);
+  box-shadow: var(--shadow-accent);
+}
+
+.register-submit-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ── Whitelist Badge (My Servers) ────────────────────────── */
+.whitelist-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 20px;
+  height: 20px;
+  padding: 0 6px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-coral);
+  color: white;
+  font-size: 0.68rem;
+  font-weight: 700;
+  line-height: 1;
+  flex-shrink: 0;
+}
+
+/* ── Whitelist Pending Requests List ─────────────────────── */
+.whitelist-requests-section {
+  overflow: hidden;
+  max-height: 0;
+  opacity: 0;
+  transition: max-height 0.35s ease, opacity 0.25s ease, padding 0.35s ease;
+}
+
+.whitelist-requests-section.open {
+  max-height: 600px;
+  opacity: 1;
+  padding-top: 12px;
+}
+
+.whitelist-requests-header {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--color-border-default);
+  margin-bottom: 8px;
+}
+
+.whitelist-request-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 0;
+  border-bottom: 1px solid var(--color-border-default);
+}
+
+.whitelist-request-item:last-child { border-bottom: none; }
+
+.whitelist-request-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.whitelist-mc-name {
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: var(--color-text-primary);
+  font-family: 'DM Sans', monospace;
+}
+
+.whitelist-requester {
+  font-size: 0.75rem;
+  color: var(--color-text-tertiary);
+}
+
+.whitelist-request-actions {
+  display: flex;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.whitelist-approve-btn,
+.whitelist-deny-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 5px 12px;
+  border-radius: var(--radius-sm);
+  font-size: 0.75rem;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, transform 0.1s ease;
+}
+
+.whitelist-approve-btn {
+  background-color: var(--color-teal);
+  color: white;
+}
+
+.whitelist-approve-btn:hover:not(:disabled) {
+  background-color: #178a65;
+  transform: translateY(-1px);
+}
+
+.whitelist-deny-btn {
+  background-color: var(--color-bg-subtle);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border-default);
+}
+
+.whitelist-deny-btn:hover:not(:disabled) {
+  background-color: rgba(216, 90, 48, 0.1);
+  color: var(--color-coral);
+  border-color: var(--color-coral);
+}
+
+.whitelist-approve-btn:disabled,
+.whitelist-deny-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.whitelist-no-requests {
+  font-size: 0.85rem;
+  color: var(--color-text-tertiary);
+  text-align: center;
+  padding: 20px 0;
+}
+
+/* ── Activity Log ────────────────────────────────────────── */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 14px 16px;
+  background: light-dark(rgba(255, 255, 255, 0.08), rgba(10, 10, 10, 0.15));
+  border-radius: var(--radius-sm);
+  transition: background-color 0.15s ease;
+}
+
+.activity-item:hover {
+  background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
+}
+
+.activity-icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-full);
+  flex-shrink: 0;
+}
+
+.activity-icon.action-request { background: rgba(81, 71, 194, 0.12); color: var(--color-accent-primary); }
+.activity-icon.action-approved { background: rgba(29, 158, 117, 0.12); color: var(--color-teal); }
+.activity-icon.action-denied { background: rgba(216, 90, 48, 0.12); color: var(--color-coral); }
+.activity-icon.action-cancelled { background: rgba(120, 120, 130, 0.1); color: var(--color-text-tertiary); }
+.activity-icon.action-default { background: var(--color-bg-subtle); color: var(--color-text-tertiary); }
+
+.activity-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+  flex: 1;
+}
+
+.activity-details {
+  font-size: 0.85rem;
+  color: var(--color-text-primary);
+  line-height: 1.4;
+}
+
+.activity-timestamp {
+  font-size: 0.72rem;
+  color: var(--color-text-tertiary);
+}
+
+/* ── My Servers card clickable ───────────────────────────── */
+.server-card.clickable { cursor: pointer; }
+.server-card.clickable:hover { box-shadow: var(--shadow-sm); transform: translateY(-2px); }
 .server-card-footer {
   display: flex;
   align-items: center;
@@ -643,8 +1018,8 @@
   transform: translateX(-50%);
   padding: 12px 24px;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   color: var(--color-text-primary);
   border-top: 2px solid;
   border-left: 2px solid;
@@ -697,8 +1072,8 @@
   justify-content: center;
   padding: 80px 40px;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;
@@ -735,7 +1110,7 @@
 /* ── Responsive: Tablet ────────────────────────────────────── */
 @media (max-width: 1024px) {
   .server-grid {
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: 1fr;
   }
 }
 
@@ -875,6 +1250,10 @@
     height: calc(100vh - 64px);
   }
 
+  .portal-main::before {
+    left: 0;
+  }
+
   .portal-header h1 {
     font-size: 1.25rem;
   }
@@ -921,8 +1300,8 @@
 
 .logout-dialog {
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;

@@ -7,6 +7,8 @@ import dashboardRoutes from './routes/dashboardRoutes';
 import adminRoutes from './routes/adminRoutes';
 import userRoutes from './routes/userRoutes';
 import serverRoutes from './routes/serverRoutes';
+import whitelistRoutes from './routes/whitelistRoutes';
+import activityRoutes from './routes/activityRoutes';
 import { connectDB } from './db/connection';
 import cors from 'cors';
 
@@ -47,6 +49,8 @@ app.use('/api/dashboard', dashboardRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/servers', serverRoutes);
+app.use('/api/whitelist', whitelistRoutes);
+app.use('/api/activity', activityRoutes);
 
 async function startServer() {
   try {
