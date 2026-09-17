@@ -21,7 +21,7 @@ React frontend, express, postgresSQL, Google OAuth (login) JWT auth with RBAC, t
 
 ## How it's structured
 
-The app never lets the frontend talk to Pterodactyl directly — everything goes through my own backend first, which checks the user's role before deciding what to actually forward to the panel. Right now that check is role-based (are you an admin), and the next thing I'm adding is ownership-based (is this your server), so a regular user can eventually manage their own instance without touching anyone else's.
+The app never lets the frontend talk to Pterodactyl directly, everything goes through my own backend first, which checks the user's role before deciding what to actually forward to the panel. Right now that check is role-based (are you an admin), and the next thing I'm adding is ownership-based (is this your server), so a regular user can eventually manage their own instance without touching anyone else's.
 
 ## Status
 
