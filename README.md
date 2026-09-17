@@ -27,7 +27,6 @@ The app never lets the frontend talk to Pterodactyl directly — everything goes
 
 Working and deployed, actively being built on. Screenshot below.
 
-<img width="1919" height="1079" alt="image" src="https://github.com/user-attachments/assets/1b2576ae-ebfb-45db-84bc-75eb4cc56ed7" />
 <img width="1919" height="1079" alt="Screenshot 2026-09-17 233319" src="https://github.com/user-attachments/assets/c29d1188-a569-4471-aba0-fcbdce398488" />
 <img width="1919" height="1079" alt="Screenshot 2026-09-17 233324" src="https://github.com/user-attachments/assets/dc94b0f5-0969-439d-a8b6-4d592e8f6b3c" />
 <img width="1919" height="1079" alt="Screenshot 2026-09-17 233233" src="https://github.com/user-attachments/assets/38ec46f3-ce96-4f61-8b2f-3ee8b69795c5" />
