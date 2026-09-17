@@ -1,6 +1,6 @@
 # Remservers
 
-A portal that sits between users and a Pterodactyl game panel — lets users view servers and (soon) manage their own, without giving them access to the actual panel, which stays admin-only.
+A portal that sits between users and a Pterodactyl game panel, lets users view servers and (soon) manage their own, without giving them access to the actual panel, which stays admin-only.
 
 Live demo: (https://portal.remservers.me)
 
