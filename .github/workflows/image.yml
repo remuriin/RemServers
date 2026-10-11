@@ -65,7 +65,7 @@ jobs:
             org.opencontainers.image.source=https://github.com/remuriin/RemServers
 
   # Logs in to the VPS as the "deploy" user. This repository's key can do one thing there: ask for a
-  # deployment in the rem-servers namespace to run the image of a commit (RAG-API/deploy/k8s-deploy).
+  # deployment in the rem-servers namespace to run the image of a commit (k8s-deploy in the Cluster repository).
   # That script waits for the new pod, and goes back to the old image by itself if it is not healthy,
   # which makes this job fail.
   deploy:
