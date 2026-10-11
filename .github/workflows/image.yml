@@ -1,5 +1,5 @@
-# Builds the portal's two container images and puts them in GitHub's registry, where the cluster
-# downloads them from. The VPS never builds anything.
+# On a push to main: build the portal's two container images and make the cluster run them.
+# The VPS never builds anything.
 name: image
 
 on:
@@ -51,6 +51,7 @@ jobs:
           labels: |
             org.opencontainers.image.source=https://github.com/remuriin/RemServers
 
+      # "tsc" runs inside this build, so a type error in the backend stops the workflow here
       - name: backend
         uses: docker/build-push-action@v6
         with:
@@ -62,3 +63,24 @@ jobs:
             ghcr.io/remuriin/remservers-api:main
           labels: |
             org.opencontainers.image.source=https://github.com/remuriin/RemServers
+
+  # Logs in to the VPS as the "deploy" user. This repository's key can do one thing there: ask for a
+  # deployment in the rem-servers namespace to run the image of a commit (RAG-API/deploy/k8s-deploy).
+  # That script waits for the new pod, and goes back to the old image by itself if it is not healthy,
+  # which makes this job fail.
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: make the cluster run this commit
+        env:
+          DEPLOY_KEY: ${{ secrets.DEPLOY_KEY }}
+        run: |
+          [ -n "$DEPLOY_KEY" ] || { echo "the DEPLOY_KEY secret is not set"; exit 1; }
+          mkdir -p ~/.ssh
+          # the VPS's public host key, so the key is only ever offered to the real VPS
+          echo "140.245.60.8 ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIBanLnPlG+CZMZyISZMZcqZRg3x0MIBK7sYoCjenpObq" > ~/.ssh/known_hosts
+          install -m 600 /dev/null ~/.ssh/deploy
+          echo "$DEPLOY_KEY" > ~/.ssh/deploy
+          ssh -i ~/.ssh/deploy deploy@140.245.60.8 "web $GITHUB_SHA"
+          ssh -i ~/.ssh/deploy deploy@140.245.60.8 "api $GITHUB_SHA"
