@@ -129,8 +129,8 @@
   gap: 12px;
   padding: 14px 18px;
   background: light-dark(rgba(255, 255, 255, 0.15), rgba(10, 10, 10, 0.3));
-  backdrop-filter: blur(8px);
   -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
   border-top: 2px solid;
   border-left: 2px solid;
   border-right: 2px solid;

@@ -1,0 +1,71 @@
+# The portal's backend: "keep one pod of its image running", and a fixed address for that pod.
+#
+# One pod only, on purpose: the Google sign-in handshake is remembered in the pod's own memory for a
+# minute, so a second pod would not know about a sign-in the first one started.
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: api
+  namespace: rem-servers
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: api
+  template:
+    metadata:
+      labels:
+        app: api
+    spec:
+      containers:
+        - name: api
+          image: ghcr.io/remuriin/remservers-api:main
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 3000
+          # every setting of the backend's .env, from a secret created by hand on the VPS:
+          #   sudo kubectl -n rem-servers create secret generic backend-env --from-env-file=<the .env file>
+          # The values are never in this repository or in the image.
+          envFrom:
+            - secretRef:
+                name: backend-env
+          env:
+            # Postgres runs on the VPS itself, outside the cluster. Inside a pod "localhost" is the
+            # pod, so the VPS is named by its own address. This wins over DB_HOST in the secret.
+            - name: DB_HOST
+              value: "10.0.0.135"
+          # the backend only starts listening after it has connected to the database, so an answer
+          # here also means the database is reachable
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 3000
+            periodSeconds: 5
+          resources:
+            requests:
+              cpu: 20m
+              memory: 96Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          securityContext:
+            runAsNonRoot: true
+            runAsUser: 1000
+            allowPrivilegeEscalation: false
+            capabilities:
+              drop: ["ALL"]
+---
+# 10.43.0.82: the address the VPS's nginx sends /api to.
+apiVersion: v1
+kind: Service
+metadata:
+  name: api
+  namespace: rem-servers
+spec:
+  type: ClusterIP
+  clusterIP: 10.43.0.82
+  selector:
+    app: api
+  ports:
+    - port: 80
+      targetPort: 3000

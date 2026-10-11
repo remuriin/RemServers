@@ -1,0 +1,64 @@
+# Builds the portal's two container images and puts them in GitHub's registry, where the cluster
+# downloads them from. The VPS never builds anything.
+name: image
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'frontend/**'
+      - 'backend/**'
+      - '.github/workflows/image.yml'
+  # also a "Run workflow" button on the Actions page
+  workflow_dispatch:
+
+# only pushes to this repository run it; a pull request from a fork never does
+permissions:
+  contents: read
+  packages: write
+
+# two pushes in a row build one after the other, never at once
+concurrency: image
+
+jobs:
+  build:
+    # an ARM machine, the same kind of CPU as the VPS: the backend's bcrypt has compiled code
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: docker/setup-buildx-action@v3
+
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: web app
+        uses: docker/build-push-action@v6
+        with:
+          context: frontend
+          platforms: linux/arm64
+          push: true
+          # one tag that names this exact commit, and "main" that always points at the newest
+          tags: |
+            ghcr.io/remuriin/remservers-web:${{ github.sha }}
+            ghcr.io/remuriin/remservers-web:main
+          # a repository variable (a public address, not a secret)
+          build-args: |
+            VITE_API_URL=${{ vars.VITE_API_URL }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/remuriin/RemServers
+
+      - name: backend
+        uses: docker/build-push-action@v6
+        with:
+          context: backend
+          platforms: linux/arm64
+          push: true
+          tags: |
+            ghcr.io/remuriin/remservers-api:${{ github.sha }}
+            ghcr.io/remuriin/remservers-api:main
+          labels: |
+            org.opencontainers.image.source=https://github.com/remuriin/RemServers
